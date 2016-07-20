@@ -7,7 +7,11 @@ const opt = getopt.parse(process.argv.slice(2));
 if (opt.options.help || opt.argv.length !== 1) {
     return getopt.showHelp();
 } else if (opt.options.lint) {
-    index.lint(opt.argv[0])
+    index.lint(opt.argv[0], opt.options.watch)
+} else if (opt.options.test) {
+    index.test(opt.argv[0], opt.options.watch)
+} else if (opt.options.coverage) {
+    index.coverage(opt.argv[0])
 }
 
 // convert(opt.argv[0], opt.options.out).then(() => console.log('Done.'), err => console.log(err));
