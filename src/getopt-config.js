@@ -2,19 +2,21 @@ const Getopt = require('node-getopt');
 
 const getopt = new Getopt([
   ['w', 'watch', 'Watch mode.'],
-  ['l', 'lint', 'Eslint check.'],
-  ['t', 'test', 'Mocha run test.'],
-  ['c', 'coverage', 'Test coverage report.'],
+  ['f', 'fix', 'Fix mode.'],
   ['h', 'help', 'display this help'],
 ]);
 
 getopt.setHelp(
-  'Usage: check-my-style [OPTIONs] path-to-dir\n' +
-  '\n' +
-  '[[OPTIONS]]\n' +
-  '\n' +
-  'Installation: npm i -g check-my-style\n' +
-  'Respository:  https://github.com/perfilyev/check-my-style'
+  `Usage: check-my-style lint|test|coverage [OPTIONs] path
+  
+  lint = eslint by airbnb
+  test = Mocha with babel es-2015
+  coverage = Istanbul with Mocha
+  
+  [[OPTIONS]]
+  
+  Installation: npm i -g check-my-style
+  Respository:  https://github.com/perfilyev/check-my-style`
 );
 
 module.exports = getopt;

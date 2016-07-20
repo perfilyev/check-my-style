@@ -4,14 +4,13 @@ const index = require('../src/index');
 
 const opt = getopt.parse(process.argv.slice(2));
 
-if (opt.options.help || opt.argv.length !== 1) {
+switch (opt.argv[0]) {
+  case 'lint':
+    return index.lint(opt.argv[1], opt.options.watch, opt.options.fix);
+  case 'test':
+    return index.test(opt.argv[1], opt.options.watch);
+  case 'coverage':
+    return index.coverage(opt.argv[1]);
+  default:
     return getopt.showHelp();
-} else if (opt.options.lint) {
-    index.lint(opt.argv[0], opt.options.watch)
-} else if (opt.options.test) {
-    index.test(opt.argv[0], opt.options.watch)
-} else if (opt.options.coverage) {
-    index.coverage(opt.argv[0])
 }
-
-// convert(opt.argv[0], opt.options.out).then(() => console.log('Done.'), err => console.log(err));

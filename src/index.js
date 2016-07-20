@@ -10,9 +10,19 @@ const mocha = `${bin}/_mocha`;
 const istanbul = `${bin}/istanbul`;
 
 const mochaOpts = [`--compilers`, `js:${__dirname}/../src/babel-register`];
+const eslintOpts = ['-c', `${__dirname}/../.eslintrc`];
 
-module.exports.lint = (dir, watch=false) => {
-  const execute = () => eslint.execute(`-c ${__dirname}/../.eslintrc ${dir}`);
+module.exports.lint = (dir, watch=false, fix=false) => {
+  console.log('Lint');
+  const opts = eslintOpts.slice();
+  
+  if (fix === true) {
+    opts.push('--fix');
+  }
+  
+  opts.push(dir);
+  
+  const execute = () => eslint.execute(opts.join(' '));
   execute();
   if (watch === true) {
     fs.watch(dir, () => {
@@ -22,6 +32,7 @@ module.exports.lint = (dir, watch=false) => {
 }
 
 module.exports.test = (dir, watch=false) => {
+  console.log('Test')
   const opts = mochaOpts.slice();
   if (watch === true) {
       opts.push('--watch')
@@ -31,5 +42,6 @@ module.exports.test = (dir, watch=false) => {
 }
 
 module.exports.coverage = dir => {
+  console.log('Coverage')
   spawn(istanbul, ['cover', mocha, '--'].concat(mochaOpts, [dir]), {stdio: "inherit"});
 }
