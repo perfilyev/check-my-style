@@ -1,47 +1,53 @@
 const eslint = require('eslint/lib/cli');
-const Mocha = require('mocha');
 const fs = require('fs');
-const path = require('path');
 const spawn = require('child_process').spawn;
-const gulp = require('gulp');
 
 const bin = `${__dirname}/../node_modules/.bin`;
-const mocha = `${bin}/_mocha`;
 const istanbul = `${bin}/istanbul`;
 
-const mochaOpts = [`--compilers`, `js:${__dirname}/../src/babel-register`];
-const eslintOpts = ['-c', `${__dirname}/../.eslintrc`];
+const mochaOpts = ['--compilers', `js:${__dirname}/../src/babel-register`];
+const eslintOpts = [];
 
-module.exports.lint = (dir, watch=false, fix=false) => {
-  console.log('Lint');
+module.exports.lint = (dir, { watch, fix, ignore, config }) => {
   const opts = eslintOpts.slice();
-  
+
   if (fix === true) {
     opts.push('--fix');
   }
-  
+
+  if (config) {
+    opts.push('-c', config);
+  } else {
+    opts.push('-c', `${__dirname}/../.eslintrc`);
+  }
+
+
+  if (ignore) {
+    opts.push('--ignore-path', ignore);
+  } else {
+    opts.push('--ignore-path', `${__dirname}/../.eslintignore`);
+  }
+
   opts.push(dir);
-  
+
   const execute = () => eslint.execute(opts.join(' '));
   execute();
   if (watch === true) {
     fs.watch(dir, () => {
-      execute()
-    })
-  } 
-}
+      execute();
+    });
+  }
+};
 
-module.exports.test = (dir, watch=false) => {
-  console.log('Test')
+module.exports.test = (dir, watch = false) => {
   const opts = mochaOpts.slice();
   if (watch === true) {
-      opts.push('--watch')
+    opts.push('--watch');
   }
-  opts.push(dir)
-  spawn(mocha, opts, {stdio: "inherit"});
-}
+  opts.push(dir);
+  spawn(mocha, opts, { stdio: 'inherit' });
+};
 
 module.exports.coverage = dir => {
-  console.log('Coverage')
-  spawn(istanbul, ['cover', mocha, '--'].concat(mochaOpts, [dir]), {stdio: "inherit"});
-}
+  spawn(istanbul, ['cover', mocha, '--'].concat(mochaOpts, [dir]), { stdio: 'inherit' });
+};

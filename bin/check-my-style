@@ -6,7 +6,7 @@ const opt = getopt.parse(process.argv.slice(2));
 
 switch (opt.argv[0]) {
   case 'lint':
-    return index.lint(opt.argv[1], opt.options.watch, opt.options.fix);
+    return index.lint(opt.argv[1], opt.options);
   case 'test':
     return index.test(opt.argv[1], opt.options.watch);
   case 'coverage':

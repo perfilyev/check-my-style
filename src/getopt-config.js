@@ -2,6 +2,8 @@ const Getopt = require('node-getopt');
 
 const getopt = new Getopt([
   ['w', 'watch', 'Watch mode.'],
+  ['c', 'config=ARG', 'Config file path.'],
+  ['i', 'ignore=ARG', 'Ignore file path.'],
   ['f', 'fix', 'Fix mode.'],
   ['h', 'help', 'display this help'],
 ]);
